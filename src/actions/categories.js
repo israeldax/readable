@@ -1,3 +1,5 @@
+import * as readableAPI from '../Util/readableAPI'
+
 export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
 
 export const receive_categories = (categories) => ({
@@ -5,11 +7,11 @@ export const receive_categories = (categories) => ({
   categories
 })
 
-// export const handleInitialData = () => async dispatch => {
-//   try {
-//     const categories = await readableAPI.getCategories()
-//     dispatch(receive_categories(categories))
-//   } catch (err) {
-//     console.log(err) //TODO: Tratar erro
-//   }
-// }
+export const fetchCategories = () => async dispatch => {
+  try {
+    const categories = await readableAPI.getCategories()
+    dispatch(receive_categories(categories))
+  } catch (err) {
+    console.log(err) //TODO: Tratar erro
+  }
+}

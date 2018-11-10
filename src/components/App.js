@@ -1,35 +1,24 @@
-import React, { Component } from 'react';
-import {connect} from 'react-redux'
-import {handleInitialData} from '../actions/shared'
-import {Button} from '@material-ui/core'
-import 'typeface-roboto';
+import React, { Component } from 'react'
+import {BrowserRouter as Router, Route} from 'react-router-dom'
+import PostsList from './PostsList'
+import CategoriesList from './CategoriesList'
+import FilteredPostsList from './FilteredPostsList'
 
 class App extends Component {
 
-  componentDidMount() {
-    const {dispatch} = this.props
-    dispatch(handleInitialData())
-  }
-
   render() {
-    const {categories, posts} = this.props
-
     return (
-      <div className="App">
-        <header className="App-header">
-          <ul>
-            {categories.map(cat => <Button color="primary" key={cat.path}>{cat.name}</Button>)}
-          </ul>
-          <ul>
-            {posts.map(post => <li>{post.title}</li>)}
-          </ul>
-        </header>
-      </div>
+      <Router>
+        <div className="App">
+          <header className="App-header">
+            <Route exact path="/" render={() => <CategoriesList />} />
+            <Route exact path="/" render={() => <PostsList />} />
+            <Route exact path={"/:category"} render={({match}) => <FilteredPostsList filter={match.params.category} />} />
+          </header>
+        </div>
+      </Router>
     );
   }
 }
 
-export default connect(state => ({
-  categories: state.categories,
-  posts: state.posts
-}))(App);
+export default App;
