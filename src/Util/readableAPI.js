@@ -16,8 +16,33 @@ export const getCategories = () =>
 
 export const getPosts = () =>
   fetch(`${api}/posts`, { headers })
-  .then(resp => resp.json())
+   .then(resp => resp.json())
 
 export const getFilteredPosts = category =>
   fetch(`${api}/${category}/posts`, { headers })
+    .then(resp => resp.json())
+
+export const votePost = (id, vote) =>
+  fetch(`${api}/${id}`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: { option: vote }
+  })
+  .then(resp => resp.json())
+
+export const savePost = post =>
+  fetch(`${api}/posts`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(post)
+  })
+
+export const deletePost = id =>
+  fetch(`${api}/posts/${id}`, {method:'DELETE', headers})
   .then(resp => resp.json())

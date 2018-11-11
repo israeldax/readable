@@ -1,5 +1,6 @@
 import React from 'react'
 import PostSummary from './PostSummary'
+import NewPostForm from './NewPostForm'
 import {connect} from 'react-redux'
 import {fetchPosts} from '../actions/posts'
 
@@ -7,7 +8,11 @@ class PostsList extends React.PureComponent {
 
   componentDidMount() {
     const {dispatch} = this.props
-    dispatch(fetchPosts())
+    try {
+      dispatch(fetchPosts())
+    } catch(err) {
+      console.log(err); //TODO: treat error
+    }
   }
 
   render() {
@@ -22,6 +27,7 @@ class PostsList extends React.PureComponent {
     return (
       <div>
         {posts.map(post => <PostSummary key={post.id} post={post} />)}
+        <NewPostForm />
       </div>
     )
   }
