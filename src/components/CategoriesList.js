@@ -6,8 +6,10 @@ import {fetchCategories} from '../actions/categories'
 class PostsList extends React.PureComponent {
 
   componentDidMount() {
-    const {dispatch} = this.props
-    dispatch(fetchCategories())
+    const {dispatch, categories} = this.props
+    if(categories.length === 0) {
+      dispatch(fetchCategories())
+    }
   }
 
   render() {

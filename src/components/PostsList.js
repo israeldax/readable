@@ -7,11 +7,13 @@ import {fetchPosts} from '../actions/posts'
 class PostsList extends React.PureComponent {
 
   componentDidMount() {
-    const {dispatch} = this.props
-    try {
-      dispatch(fetchPosts())
-    } catch(err) {
-      console.log(err); //TODO: treat error
+    const {dispatch, posts} = this.props
+    if(posts.length === 0){
+      try {
+        dispatch(fetchPosts())
+      } catch(err) {
+        console.log(err); //TODO: treat error
+      }
     }
   }
 
