@@ -6,14 +6,22 @@ import FilteredPostsList from './FilteredPostsList'
 
 class App extends Component {
 
+  state = { sortby: 'vote' }
+
   render() {
+    const {sortby} = this.state
     return (
       <Router>
         <div className="App">
           <header className="App-header">
-            <Route exact path="/" render={() => <CategoriesList />} />
-            <Route exact path="/" render={() => <PostsList />} />
-            <Route exact path={"/:category"} render={({match}) => <FilteredPostsList filter={match.params.category} />} />
+            <Route path="/" render={() => <CategoriesList />} />
+            <input type="radio" value="vote" checked={sortby === 'vote'} onChange={e => this.setState({sortby: 'vote'})}/>
+              Vote
+            <input type="radio" value="date" checked={sortby === 'date'} onChange={e => this.setState({sortby: 'date'})}/>
+              Date
+            <hr/>
+            <Route exact path="/" render={() => <PostsList sortby={sortby} />} />
+            <Route exact path={"/:category"} render={({match}) => <FilteredPostsList filter={match.params.category} sortby={sortby} />} />
           </header>
         </div>
       </Router>
