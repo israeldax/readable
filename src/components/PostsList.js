@@ -18,7 +18,7 @@ class PostsList extends React.PureComponent {
   }
 
   render() {
-    const {loading, posts, sortby} = this.props
+    const {loading, posts, sortingby} = this.props
 
     if(loading)
       return <div>carregando...</div>
@@ -26,7 +26,7 @@ class PostsList extends React.PureComponent {
     if(posts.length === 0)
       return <div>Ainda não há postagens</div>
 
-    const attr = sortby === 'vote' ? 'voteScore' : 'timestamp'
+    const attr = sortingby === 'vote' ? 'voteScore' : 'timestamp'
     const sortedPosts = posts.slice().sort((a,b) => b[attr] - a[attr])
 
     return (
@@ -38,10 +38,10 @@ class PostsList extends React.PureComponent {
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
   posts: state.posts,
   loading: state.loadingPosts,
-  sortby: ownProps.sortby
+  sortingby: state.sortingby
 })
 
 export default connect(mapStateToProps)(PostsList);
