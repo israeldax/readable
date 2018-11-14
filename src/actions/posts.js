@@ -1,11 +1,13 @@
 import * as readableAPI from '../Util/readableAPI'
 
+export const FETCH_POSTS = 'FETCH_POSTS'
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
-export const RESET_POSTS_LOADING = 'RESET_POSTS_LOADING'
 export const ADD_POST = 'ADD_POST'
 export const REMOVE_POST = 'REMOVE_POST'
 export const UPVOTE = 'UPVOTE'
 export const DOWNVOTE = 'DOWNVOTE'
+
+const fetch_posts = () => ({ type: FETCH_POSTS})
 
 const receive_posts = (posts) => ({
   type: RECEIVE_POSTS,
@@ -22,21 +24,25 @@ const remove_post = id => ({
   id
 })
 
-const upVote = id => ({
+const up_vote = id => ({
   type: UPVOTE,
   id
 })
 
-const downVote = id => ({
+const down_vote = id => ({
   type: DOWNVOTE,
   id
 })
 
-export const reset_posts_loading = () => ({ type: RESET_POSTS_LOADING })
-
-export const fetchPosts = () => async dispatch => {
-  const posts = await readableAPI.getPosts()
-  dispatch(receive_posts(posts))
+export const initPosts = () => async dispatch => {
+  dispatch(fetch_posts())
+  try {
+    const posts = await readableAPI.getPosts()
+    dispatch(receive_posts(posts))
+  } catch (err) {
+    console.log(err)
+    dispatch(initPosts())
+  }
 }
 
 export const savePost = post => async dispatch => {
@@ -62,21 +68,21 @@ export const deletePost = post => async dispatch => {
 }
 
 export const like = id => async dispatch => {
-  dispatch(upVote(id))
+  dispatch(up_vote(id))
   try{
     readableAPI.vote(id, 'upVote')
   } catch(err) {
     console.log(err)
-    dispatch(downVote(id))
+    dispatch(down_vote(id))
   }
 }
 
 export const dislike = id => async dispatch => {
-  dispatch(downVote(id))
+  dispatch(down_vote(id))
   try{
     readableAPI.vote(id, 'downVote')
   } catch(err) {
     console.log(err)
-    dispatch(upVote(id))
+    dispatch(up_vote(id))
   }
 }

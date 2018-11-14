@@ -1,21 +1,22 @@
 import * as readableAPI from '../Util/readableAPI'
 
+export const FETCH_FILTERED_POSTS = 'FETCH_FILTERED_POSTS'
 export const RECEIVE_FILTERED_POSTS = 'RECEIVE_FILTERED_POSTS'
-export const RESET_FILTERED_POSTS_LOADING = 'RESET_FILTERED_POSTS_LOADING'
 
-export const receive_filtered_posts = (posts) => ({
+const fetch_filtered_posts = () => ({ type: FETCH_FILTERED_POSTS })
+
+const receive_filtered_posts = (posts) => ({
   type: RECEIVE_FILTERED_POSTS,
-  posts,
-  loadingFilteredPosts: false
+  posts
 })
 
-export const reset_filtered_posts_loading = () => ({ type: RESET_FILTERED_POSTS_LOADING })
-
-export const fetchFilteredPosts = filter => async dispatch => {
+export const initFilteredPosts = filter => async dispatch => {
+  dispatch(fetch_filtered_posts(filter))
   try {
     const posts = await readableAPI.getFilteredPosts(filter)
     dispatch(receive_filtered_posts(posts))
   } catch (err) {
     console.log(err) //TODO: Tratar erro
+    dispatch(initFilteredPosts())
   }
 }

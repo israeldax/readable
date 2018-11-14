@@ -2,7 +2,7 @@ import React from 'react'
 import PostSummary from './PostSummary'
 import NewPostForm from './NewPostForm'
 import {connect} from 'react-redux'
-import {fetchPosts} from '../actions/posts'
+import {initPosts} from '../actions/posts'
 
 class PostsList extends React.PureComponent {
 
@@ -10,7 +10,7 @@ class PostsList extends React.PureComponent {
     const {dispatch, posts} = this.props
     if(posts.length === 0){
       try {
-        dispatch(fetchPosts())
+        dispatch(initPosts())
       } catch(err) {
         console.log(err); //TODO: treat error
       }
@@ -40,9 +40,9 @@ const sortList = (posts, sortingby) => {
   return posts.slice(0).sort((a,b) => b[attr] - a[attr])
 }
 
-const mapStateToProps = ({posts, loadingPosts, sortingby}) => ({
+const mapStateToProps = ({posts, isFetchingPosts, sortingby}) => ({
   posts: sortList(posts, sortingby),
-  loading: loadingPosts
+  loading: isFetchingPosts
 })
 
 export default connect(mapStateToProps)(PostsList);

@@ -1,42 +1,46 @@
 import React from 'react'
 import PostSummary from './PostSummary'
 import {connect} from 'react-redux'
-import {fetchFilteredPosts, reset_filtered_posts_loading} from '../actions/filteredPosts'
+import {initFilteredPosts} from '../actions/filteredPosts'
 
 class FilteredPostsList extends React.PureComponent {
 
   componentDidMount() {
-    const {dispatch, filter} = this.props
-    dispatch(fetchFilteredPosts(filter))
+    const {populateComponent, filter} = this.props
+    populateComponent(filter)
   }
 
-  componentWillUnmount() {
-    const {dispatch} = this.props
-    dispatch(reset_filtered_posts_loading())
+  componentDidUpdate(prevState) {
+    const {populateComponent, filter} = this.props
+    if(prevState.filter !== filter)
+      populateComponent(filter)
   }
 
   render() {
-    const {loading, filteredPosts} = this.props
+    const {loading, posts} = this.props
 
     if(loading)
       return <div>Carregando</div>
 
-    if(filteredPosts.length === 0)
+    if(posts.length === 0)
       return <div>Ainda não há postagens</div>
-
 
     return (
       <div>
-        {filteredPosts.map(post => <PostSummary key={post.id} post={post} />)}
+        {posts.map(post => <PostSummary key={post.id} post={post} />)}
       </div>
     )
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  filter: ownProps.filter,
-  loading: state.loadingFilteredPosts,
-  filteredPosts: state.filteredPosts,
+const mapStateToProps = ({filteredPosts, isFetchingFilteredPosts}, {filter}) => ({
+  filter,
+  loading: isFetchingFilteredPosts,
+  posts: filteredPosts,
 })
 
-export default connect(mapStateToProps)(FilteredPostsList);
+const mapDispatchToProps = dispatch => ({
+  populateComponent: filter => dispatch(initFilteredPosts(filter))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilteredPostsList);
