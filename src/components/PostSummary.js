@@ -1,6 +1,6 @@
 import React from 'react'
 import{connect} from 'react-redux'
-import {deletePost} from '../actions/posts'
+import {deletePost, like, dislike} from '../actions/posts'
 
 function PostSummary ({dispatch, post}) {
   const {id, title, author, voteScore=1, deleted=false, commentCount=0} = post
@@ -14,6 +14,8 @@ function PostSummary ({dispatch, post}) {
         comentários: {commentCount}
         deleted: {deleted.toString()}
       </p>
+      <button onClick={() => dispatch(like(id))}>+</button>
+      <button onClick={() => dispatch(dislike(id))}>-</button>
       <button onClick={() => dispatch(deletePost(post))}>x</button>
     </div>
   )

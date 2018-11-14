@@ -44,6 +44,7 @@ class NewPostForm extends React.Component {
     post.body = body.trim()
     post.author = author.trim()
     post.category = category
+    post.voteScore = 1
 
     this.setState({...this.defaultState})
     try {

@@ -22,14 +22,14 @@ export const getFilteredPosts = category =>
   fetch(`${api}/${category}/posts`, { headers })
     .then(resp => resp.json())
 
-export const votePost = (id, vote) =>
-  fetch(`${api}/${id}`, {
+export const vote = (id, vote) =>
+  fetch(`${api}/posts/${id}`, {
     method: 'POST',
     headers: {
       ...headers,
       'Content-Type': 'application/json'
     },
-    body: { option: vote }
+    body: JSON.stringify({ option: vote })
   })
   .then(resp => resp.json())
 

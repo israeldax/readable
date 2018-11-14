@@ -4,6 +4,8 @@ export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const RESET_POSTS_LOADING = 'RESET_POSTS_LOADING'
 export const ADD_POST = 'ADD_POST'
 export const REMOVE_POST = 'REMOVE_POST'
+export const UPVOTE = 'UPVOTE'
+export const DOWNVOTE = 'DOWNVOTE'
 
 const receive_posts = (posts) => ({
   type: RECEIVE_POSTS,
@@ -17,6 +19,16 @@ const add_post = (post) => ({
 
 const remove_post = id => ({
   type: REMOVE_POST,
+  id
+})
+
+const upVote = id => ({
+  type: UPVOTE,
+  id
+})
+
+const downVote = id => ({
+  type: DOWNVOTE,
   id
 })
 
@@ -46,5 +58,25 @@ export const deletePost = post => async dispatch => {
     console.log(err)
     dispatch(add_post(post))
     throw err
+  }
+}
+
+export const like = id => async dispatch => {
+  dispatch(upVote(id))
+  try{
+    readableAPI.vote(id, 'upVote')
+  } catch(err) {
+    console.log(err)
+    dispatch(downVote(id))
+  }
+}
+
+export const dislike = id => async dispatch => {
+  dispatch(downVote(id))
+  try{
+    readableAPI.vote(id, 'downVote')
+  } catch(err) {
+    console.log(err)
+    dispatch(upVote(id))
   }
 }
