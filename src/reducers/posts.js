@@ -9,15 +9,11 @@ const posts = (state = [], action) => {
     case REMOVE_POST:
       return state.filter(p => p.id !== action.id)
     case UPVOTE:
-      const newState = state.slice()
-      const index = newState.findIndex(p => p.id === action.id)
-      newState[index].voteScore += 1
-      return newState
+      return state.map(p => p.id !== action.id ? p :
+        Object.assign({}, p, {voteScore: p.voteScore + 1}))
     case DOWNVOTE:
-      const posts = state.slice()
-      const position = posts.findIndex(p => p.id === action.id)
-      posts[position].voteScore -= 1
-      return posts
+      return state.map(p => p.id !== action.id ? p :
+        Object.assign({}, p, {voteScore: p.voteScore - 1}))
     default:
       return state
   }

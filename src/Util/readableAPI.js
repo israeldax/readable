@@ -10,20 +10,35 @@ const headers = {
 }
 
 export const getCategories = () =>
-  fetch(`${api}/categories`, { headers })
-    .then(resp => resp.json())
-    .then(json => json.categories)
+fetch(`${api}/categories`, { headers })
+  .then(resp => resp.json())
+  .then(json => json.categories)
 
 export const getPosts = () =>
   fetch(`${api}/posts`, { headers })
-   .then(resp => resp.json())
+    .then(resp => resp.json())
 
 export const getFilteredPosts = category =>
   fetch(`${api}/${category}/posts`, { headers })
     .then(resp => resp.json())
 
+export const getComments = id =>
+  fetch(`${api}/posts/${id}/comments`, { headers})
+    .then(resp => resp.json())
+
 export const vote = (id, vote) =>
   fetch(`${api}/posts/${id}`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ option: vote })
+  })
+  .then(resp => resp.json())
+
+  export const voteComment = (id, vote) =>
+  fetch(`${api}/comments/${id}`, {
     method: 'POST',
     headers: {
       ...headers,
@@ -43,6 +58,20 @@ export const savePost = post =>
     body: JSON.stringify(post)
   })
 
+export const saveComment = comment =>
+  fetch(`${api}/comments`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(comment)
+  })
+
 export const deletePost = id =>
   fetch(`${api}/posts/${id}`, {method:'DELETE', headers})
+  .then(resp => resp.json())
+
+  export const deleteComment = id =>
+  fetch(`${api}/comments/${id}`, {method:'DELETE', headers})
   .then(resp => resp.json())

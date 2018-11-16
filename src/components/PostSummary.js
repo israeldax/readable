@@ -1,24 +1,30 @@
 import React from 'react'
-import{connect} from 'react-redux'
-import {deletePost, like, dislike} from '../actions/posts'
+import {connect} from 'react-redux'
+import LikeDislikePosts from './LikeDislikePosts'
+import {Link} from 'react-router-dom'
+import {deletePost} from '../actions/posts'
 
-function PostSummary ({dispatch, post}) {
-  const {id, title, author, voteScore=1, deleted=false, commentCount=0} = post
-  return (
-    <div>
-      <h2>{title}</h2>
-      <p>
-        id: {id}
-        autor: {author}
-        pontuação: {voteScore}
-        comentários: {commentCount}
-        deleted: {deleted.toString()}
-      </p>
-      <button onClick={() => dispatch(like(id))}>+</button>
-      <button onClick={() => dispatch(dislike(id))}>-</button>
-      <button onClick={() => dispatch(deletePost(post))}>x</button>
-    </div>
-  )
+class PostSummary extends React.PureComponent {
+
+  render() {
+    const {dispatch, post} = this.props
+    const {id, title, author, voteScore=1, commentCount=0} = post
+    return (
+      <div>
+        <Link to={{pathname:`/${post.category}/${id}`, state:{post} }} >
+          <h2>{title}</h2>
+        </Link>
+        <p>
+          id: {id}
+          autor: {author}
+          pontuação: {voteScore}
+          comentários: {commentCount}
+        </p>
+        <LikeDislikePosts id={id} />
+        <button onClick={() => dispatch(deletePost(post))}>x</button>
+      </div>
+    )
+  }
 }
 
-export default connect()(PostSummary)
+export default connect((state, {post}) => ({post}))(PostSummary)
