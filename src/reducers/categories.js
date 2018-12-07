@@ -1,8 +1,8 @@
-import {RECEIVE_CATEGORIES} from '../actions/categories'
+import {RECEIVE_DATA} from '../actions/shared'
 
 const categories = (state = [], action) => {
   switch (action.type) {
-    case RECEIVE_CATEGORIES:
+    case RECEIVE_DATA:
       return action.categories
     default:
       return state

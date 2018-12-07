@@ -1,10 +1,10 @@
-import {RECEIVE_POSTS, ADD_POST, REMOVE_POST, UPVOTE, DOWNVOTE} from '../actions/posts'
+import {RECEIVE_DATA} from '../actions/shared'
+import {ADD_POST, REMOVE_POST, UPVOTE, DOWNVOTE} from '../actions/posts'
 
 const posts = (state = {}, action) => {
   switch (action.type) {
-    case RECEIVE_POSTS:
+    case RECEIVE_DATA:
       return {
-        ...state,
         ...action.posts
       } 
     case ADD_POST:

@@ -2,29 +2,17 @@ import React from 'react'
 import PostSummary from './PostSummary'
 import NewPostForm from './NewPostForm'
 import {connect} from 'react-redux'
-import {initPosts} from '../actions/posts'
 
 class PostsList extends React.PureComponent {
-
-  componentDidMount() {
-    const {dispatch, posts} = this.props
-    if(posts.length === 0){
-      try {
-        dispatch(initPosts())
-      } catch(err) {
-        console.log(err); //TODO: treat error
-      }
-    }
-  }
 
   render() {
     const {loading, posts} = this.props
 
     if(loading)
-      return <div>carregando...</div>
+      return <div>loading...</div>
 
     if(posts.length === 0)
-      return <div>Ainda não há postagens</div>
+      return <div>Sorry... There are no posts yet.</div>
 
     return (
       <div>
@@ -35,16 +23,23 @@ class PostsList extends React.PureComponent {
   }
 }
 
-const sortList = (posts, allPosts, sortingby) => {
-  const disorderdPosts = allPosts.map(id => posts[id])
-  
+const sortList = (posts, sortingby) => {
   const attr = sortingby === 'vote' ? 'voteScore' : 'timestamp'
-  return disorderdPosts.sort((a,b) => b[attr] - a[attr])
+  return posts.sort((a,b) => b[attr] - a[attr])
 }
 
-const mapStateToProps = ({posts, allPosts, isFetchingPosts, sortingby}) => ({
-  posts: sortList(posts, allPosts, sortingby),
-  loading: isFetchingPosts
-})
+const mapStateToProps = ({posts, allPosts, isFetchingPosts, sortingby}, {filter}) => {
+  const disorderedPosts = allPosts.map(id => posts[id])
+  let filteredPosts
+  
+  if(filter)
+    filteredPosts = disorderedPosts.filter(post => post.category === filter)
+
+  return {
+    filter,
+    posts: sortList(filter ? filteredPosts : disorderedPosts, sortingby),
+    loading: isFetchingPosts
+  }
+}
 
 export default connect(mapStateToProps)(PostsList);

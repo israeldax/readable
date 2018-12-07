@@ -6,7 +6,6 @@ export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
 
 export const receive_categories = (categories) => {
   const resp = normalize(categories, schema.arrayOfCategories)
-  console.log(resp)
   return {
     type: RECEIVE_CATEGORIES,
     categories: resp.entities.category,

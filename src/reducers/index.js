@@ -1,26 +1,22 @@
 import {combineReducers} from 'redux'
-import categories from './categories'
 import allCategories from './allCategories'
-import posts from './posts'
+import categories from './categories'
+import isFetchingInitialData from './isFetchingInitialData'
 import allPosts from './allPosts'
-import comments from './comments'
-import allComments from './allComments'
-import filteredPosts from './filteredPosts'
-import isFetchingPosts from './isFetchingPosts'
+import posts from './posts'
 import isFetchingComments from './isFetchingComments'
-import isFetchingFilteredPosts from './isFetchingFilteredPosts'
+import allComments from './allComments'
+import comments from './comments'
 import sortingby from './sortingby'
 
 export default combineReducers({
-  categories,
+  isFetchingInitialData,
   allCategories,
-  isFetchingPosts,
-  posts,
+  categories,
   allPosts,
+  posts,
   isFetchingComments,
-  comments,
   allComments,
-  filteredPosts,
-  isFetchingFilteredPosts,
+  comments,
   sortingby
 })
