@@ -1,11 +1,18 @@
+import {normalize} from 'normalizr'
+import * as schema from '../Util/schema'
 import * as readableAPI from '../Util/readableAPI'
 
 export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
 
-export const receive_categories = (categories) => ({
-  type: RECEIVE_CATEGORIES,
-  categories
-})
+export const receive_categories = (categories) => {
+  const resp = normalize(categories, schema.arrayOfCategories)
+  console.log(resp)
+  return {
+    type: RECEIVE_CATEGORIES,
+    categories: resp.entities.category,
+    allCategories: resp.result
+  }
+}
 
 export const fetchCategories = () => async dispatch => {
   try {

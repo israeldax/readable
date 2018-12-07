@@ -1,19 +1,36 @@
 import {RECEIVE_POSTS, ADD_POST, REMOVE_POST, UPVOTE, DOWNVOTE} from '../actions/posts'
 
-const posts = (state = [], action) => {
+const posts = (state = {}, action) => {
   switch (action.type) {
     case RECEIVE_POSTS:
-      return action.posts
+      return {
+        ...state,
+        ...action.posts
+      } 
     case ADD_POST:
-      return state.concat([action.post])
+      return {
+        ...state,
+        [action.post.id]: action.post
+      }
     case REMOVE_POST:
-      return state.filter(p => p.id !== action.id)
+      const { [action.id]:value, ...newState } = state
+      return newState
     case UPVOTE:
-      return state.map(p => p.id !== action.id ? p :
-        Object.assign({}, p, {voteScore: p.voteScore + 1}))
+      return {
+        ...state,
+        [action.id]: {
+          ...state[action.id],
+          voteScore: state[action.id].voteScore + 1
+        }
+      }
     case DOWNVOTE:
-      return state.map(p => p.id !== action.id ? p :
-        Object.assign({}, p, {voteScore: p.voteScore - 1}))
+      return {
+        ...state,
+        [action.id]: {
+          ...state[action.id],
+          voteScore: state[action.id].voteScore - 1
+        }
+      }
     default:
       return state
   }

@@ -27,11 +27,14 @@ class CommentsListing extends React.PureComponent {
 
 }
 
-const mapStateToProps = ({isFetchingComments, comments}, {id}) => ({
-  id,
-  loading: isFetchingComments,
-  comments
-})
+const mapStateToProps = ({isFetchingComments, comments, allComments}, {id}) => {
+  const commentsList = allComments.map(id => comments[id])
+  return {
+    id,
+    loading: isFetchingComments,
+    comments: commentsList
+  }
+}
 
 const mapDispatchToProps = (dispatch) => ({
   getComments: id => dispatch(getComments(id))

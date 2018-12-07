@@ -1,3 +1,5 @@
+import {normalize} from 'normalizr'
+import * as schema from '../Util/schema'
 import * as readableAPI from '../Util/readableAPI'
 
 export const FETCH_COMMENTS = 'FETCH_COMMENTS'
@@ -11,10 +13,14 @@ const fetch_comments = () => ({
   type: FETCH_COMMENTS
 })
 
-const receive_comments = (comments) => ({
-  type: RECEIVE_COMMENTS,
-  comments
-})
+const receive_comments = (comments) => {
+  const resp = normalize(comments, schema.arrayOfComments)
+  return {
+    type: RECEIVE_COMMENTS,
+    comments: resp.entities.comment,
+    allComments: resp.result
+  }
+}
 
 const upvote_comment = id => ({
   type: UP_VOTE_COMMENT,

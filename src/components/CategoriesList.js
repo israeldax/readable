@@ -24,4 +24,11 @@ class PostsList extends React.PureComponent {
   }
 }
 
-export default connect(state => ({categories: state.categories}))(PostsList)
+const mapStateToProps = ({allCategories, categories}) => {
+  const categoriesList = allCategories.map(id => categories[id])
+  return {
+    categories: categoriesList
+  }
+}
+
+export default connect(mapStateToProps)(PostsList)

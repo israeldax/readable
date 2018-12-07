@@ -74,4 +74,11 @@ class NewPostForm extends React.Component {
   }
 }
 
-export default connect(({categories}) => ({categories}))(NewPostForm)
+const mapStateToProps = (({allCategories, categories}) => {
+  const categoryList = allCategories.map(id => categories[id])
+  return {
+    categories: categoryList
+  }
+})
+
+export default connect(mapStateToProps)(NewPostForm)

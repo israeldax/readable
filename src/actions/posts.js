@@ -1,3 +1,5 @@
+import {normalize} from 'normalizr'
+import * as scheme from '../Util/schema'
 import * as readableAPI from '../Util/readableAPI'
 
 export const FETCH_POSTS = 'FETCH_POSTS'
@@ -9,10 +11,14 @@ export const DOWNVOTE = 'DOWNVOTE'
 
 const fetch_posts = () => ({ type: FETCH_POSTS})
 
-const receive_posts = (posts) => ({
-  type: RECEIVE_POSTS,
-  posts
-})
+const receive_posts = (posts) => {
+  const resp = normalize(posts, scheme.arrayOfPosts)
+  return {
+    type: RECEIVE_POSTS,
+    posts: resp.entities.post,
+    allPosts: resp.result
+  }
+}
 
 const add_post = (post) => ({
   type: ADD_POST,

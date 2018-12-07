@@ -1,19 +1,36 @@
 import {RECEIVE_COMMENTS, UP_VOTE_COMMENT, DOWN_VOTE_COMMENT, ADD_COMMENT, DELETE_COMMENT} from '../actions/comments'
 
-const comments = (state = [], action) => {
+const comments = (state = {}, action) => {
   switch (action.type) {
     case RECEIVE_COMMENTS:
-      return action.comments
+      return {
+        ...state,
+        ...action.comments
+      }
     case UP_VOTE_COMMENT:
-      return state.map(c => c.id !== action.id ? c :
-        Object.assign({}, c, {voteScore: c.voteScore + 1}))
+      return {
+        ...state,
+        [action.id]: {
+          ...state[action.id],
+          voteScore: state[action.id].voteScore + 1
+        }
+      }
     case DOWN_VOTE_COMMENT:
-      return state.map(c => c.id !== action.id ? c :
-        Object.assign({}, c, {voteScore: c.voteScore - 1}))
+      return {
+        ...state,
+        [action.id]: {
+          ...state[action.id],
+          voteScore: state[action.id].voteScore - 1
+        }
+      }
     case ADD_COMMENT:
-        return state.concat([action.comment])
+        return {
+          ...state,
+          [action.comment.id]: action.comment
+        }
     case DELETE_COMMENT:
-      return state.filter(c => c.id !== action.id)
+      const { [action.id]:value, ...newState } = state
+      return newState
     default:
       return state
   }

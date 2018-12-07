@@ -35,13 +35,15 @@ class PostsList extends React.PureComponent {
   }
 }
 
-const sortList = (posts, sortingby) => {
+const sortList = (posts, allPosts, sortingby) => {
+  const disorderdPosts = allPosts.map(id => posts[id])
+  
   const attr = sortingby === 'vote' ? 'voteScore' : 'timestamp'
-  return posts.slice(0).sort((a,b) => b[attr] - a[attr])
+  return disorderdPosts.sort((a,b) => b[attr] - a[attr])
 }
 
-const mapStateToProps = ({posts, isFetchingPosts, sortingby}) => ({
-  posts: sortList(posts, sortingby),
+const mapStateToProps = ({posts, allPosts, isFetchingPosts, sortingby}) => ({
+  posts: sortList(posts, allPosts, sortingby),
   loading: isFetchingPosts
 })
 
