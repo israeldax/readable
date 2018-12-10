@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import PageNotFound from './PageNotFound' 
 import Placeholder from './Placeholder'
 import PostDetailPresentation from './PostDetailPresentation'
 import EditPost from './EditPostContainer'
@@ -7,8 +8,10 @@ import CommentsListing from './CommentsListing'
 
 
 function PostDetails ({post, loading}) {
-  if(loading || !post)
+  if(loading)
     return <div>Loading...</div>
+  if(!post)
+    return <PageNotFound />
 
   return (
     <div>

@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import {BrowserRouter as Router, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {handleInitialData} from '../actions/shared'
 import {sortby} from '../actions/sortingby'
 import PostsList from './PostsList'
 import CategoriesList from './CategoriesList'
 import PostDetails from './PostDetails'
+import PageNotFound from './PageNotFound'
 
 class App extends Component {
 
@@ -29,9 +30,12 @@ class App extends Component {
             <input type="radio" value="date" checked={sortingby === 'date'} onChange={() => sortbyDate()}/>
               Date
             <hr/>
-            <Route exact path="/" component={PostsList} />
-            <Route exact path="/:category" render={({match}) => <PostsList filter={match.params.category} />} />
-            <Route exact path="/:category/:id" render={({match}) => <PostDetails id={match.params.id} /> } />
+            <Switch>
+              <Route exact path="/" component={PostsList} />
+              <Route exact path="/:category" render={({match}) => <PostsList filter={match.params.category} />} />
+              <Route exact path="/:category/:id" render={({match}) => <PostDetails id={match.params.id} /> } />
+              <Route component={PageNotFound} />
+            </Switch>
           </header>
         </div>
       </Router>
