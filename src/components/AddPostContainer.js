@@ -13,6 +13,7 @@ class AddPostContainer extends React.Component {
     body: "",
     author: "",
     voteScore: 1,
+    commentCount: 0,
     category: "",
   }
 
