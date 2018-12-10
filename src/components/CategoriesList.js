@@ -18,8 +18,9 @@ class PostsList extends React.PureComponent {
 
 const mapStateToProps = ({allCategories, categories}) => {
   const categoriesList = allCategories.map(id => categories[id])
+  const firstCategory = {path:"", name:"All"}
   return {
-    categories: categoriesList
+    categories: [firstCategory, ...categoriesList]
   }
 }
 
