@@ -1,36 +1,40 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getComments} from '../actions/comments'
+import Placeholder from './Placeholder'
 import Comment from './Comment'
-import CommentAddEdit from './CommentAddEdit'
+import EditComment from './EditCommentContainer'
+import AddComment from './AddCommentContainer'
 
 class CommentsListing extends React.PureComponent {
 
   componentDidMount() {
-    const {getComments, id} = this.props
-    getComments(id)
+    const {getComments, parentId} = this.props
+    getComments(parentId)
   }
 
   render() {
-    const {loading, comments, id} = this.props
+    const {loading, comments, parentId} = this.props
 
     if(loading)
       return <div>Loading</div>
 
     return(
       <div>
-        {comments.map(c => <Comment key={c.id} comment={c} />)}
-        <CommentAddEdit parentId={id} />
+        {comments.map(c => <CommentPlaceholder key={c.id} comment={c} />)}
+        <AddComment parentId={parentId} />
       </div>
     )
   }
 
 }
 
-const mapStateToProps = ({isFetchingComments, comments, allComments}, {id}) => {
+const CommentPlaceholder = Placeholder(Comment, EditComment)
+
+const mapStateToProps = ({isFetchingComments, comments, allComments}, {parentId}) => {
   const commentsList = allComments.map(id => comments[id])
   return {
-    id,
+    parentId,
     loading: isFetchingComments,
     comments: commentsList
   }

@@ -7,11 +7,11 @@ import {deletePost} from '../actions/posts'
 class PostSummary extends React.PureComponent {
 
   render() {
-    const {dispatch, post} = this.props
+    const {dispatch, enableEditMode, post} = this.props
     const {id, title, author, voteScore=1, commentCount=0} = post
     return (
       <div>
-        <Link to={{pathname:`/${post.category}/${id}`, state:{post} }} >
+        <Link to={`/${post.category}/${id}`} >
           <h2>{title}</h2>
         </Link>
         <p>
@@ -22,9 +22,10 @@ class PostSummary extends React.PureComponent {
         </p>
         <LikeDislikePosts id={id} />
         <button onClick={() => dispatch(deletePost(post))}>x</button>
+        <button onClick={() => enableEditMode()}>e</button>
       </div>
     )
   }
 }
 
-export default connect((state, {post}) => ({post}))(PostSummary)
+export default connect((state, {post, enableEditMode}) => ({post}))(PostSummary)

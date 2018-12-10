@@ -7,6 +7,7 @@ export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
 export const UP_VOTE_COMMENT = 'UP_VOTE'
 export const DOWN_VOTE_COMMENT = 'DOWN_VOTE'
 export const ADD_COMMENT = 'ADD_COMMENT'
+export const EDIT_COMMENT = 'EDIT_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 
 const fetch_comments = () => ({
@@ -34,6 +35,11 @@ const downvote_comment = id => ({
 
 const add_comment = comment => ({
   type: ADD_COMMENT,
+  comment
+})
+
+const edit_comment = comment => ({
+  type: EDIT_COMMENT,
   comment
 })
 
@@ -80,6 +86,17 @@ export const saveComment = comment => async dispatch => {
   } catch (err) {
     console.log(err)
     dispatch(delete_comment(comment.id))
+    throw err
+  }
+}
+
+export const editComment = (editedComment, uneditedComment) => async dispatch => {
+  dispatch(edit_comment(editedComment))
+  try {
+    readableAPI.editComment(editedComment)
+  } catch (err) {
+    console.log(err)
+    dispatch(edit_comment(uneditedComment))
     throw err
   }
 }

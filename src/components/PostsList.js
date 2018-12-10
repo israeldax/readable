@@ -1,6 +1,8 @@
 import React from 'react'
+import Placeholder from './Placeholder'
 import PostSummary from './PostSummary'
-import NewPostForm from './NewPostForm'
+import EditPost from './EditPostContainer'
+import AddPostContainer from './AddPostContainer'
 import {connect} from 'react-redux'
 
 class PostsList extends React.PureComponent {
@@ -16,12 +18,15 @@ class PostsList extends React.PureComponent {
 
     return (
       <div>
-        {posts.map(post => <PostSummary key={post.id} post={post} />)}
-        <NewPostForm />
+        {posts.map(post => <PostPlaceholder key={post.id} post={post} />)}
+        <AddPostContainer />
       </div>
     )
   }
 }
+
+
+const PostPlaceholder = Placeholder(PostSummary, EditPost)
 
 const sortList = (posts, sortingby) => {
   const attr = sortingby === 'vote' ? 'voteScore' : 'timestamp'
@@ -31,7 +36,7 @@ const sortList = (posts, sortingby) => {
 const mapStateToProps = ({posts, allPosts, isFetchingPosts, sortingby}, {filter}) => {
   const disorderedPosts = allPosts.map(id => posts[id])
   let filteredPosts
-  
+
   if(filter)
     filteredPosts = disorderedPosts.filter(post => post.category === filter)
 

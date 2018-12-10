@@ -6,7 +6,7 @@ import LikeDislike from './LikeDislikeComment'
 class Comment extends React.PureComponent {
 
   render() {
-    const {comment, deleteComment} = this.props
+    const {comment, enableEditMode, deleteComment} = this.props
     const {id, timestamp, body, author, voteScore} = comment
     return (
       <div>
@@ -17,6 +17,7 @@ class Comment extends React.PureComponent {
           timestamp: {timestamp}
         </div>
         <LikeDislike id={id} />
+        <button onClick={enableEditMode}>e</button>
         <button onClick={() => deleteComment(comment)}>x</button>
       </div>
     )
@@ -24,8 +25,9 @@ class Comment extends React.PureComponent {
 
 }
 
-const mapStateToProps = (state, {comment}) => ({
-  comment
+const mapStateToProps = (state, {comment, enableEditMode}) => ({
+  comment,
+  enableEditMode
 })
 
 const mapDispatchToProps = dispatch => ({

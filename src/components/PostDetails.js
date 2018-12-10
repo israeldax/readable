@@ -1,32 +1,33 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import Placeholder from './Placeholder'
+import PostDetailPresentation from './PostDetailPresentation'
+import EditPost from './EditPostContainer'
 import CommentsListing from './CommentsListing'
-import LikeDislikePosts from './LikeDislikePosts'
-import {deletePost} from '../actions/posts'
 
-function PostDetails ({dispatch, post}) {
-  const {id, title, body, author, voteScore=1, commentCount=0} = post
+
+function PostDetails ({post, loading}) {
+  if(loading || !post)
+    return <div>Loading...</div>
+
   return (
     <div>
-      <h2>{title}</h2>
-      <p>
-        id: {id}
-        autor: {author}
-        pontuação: {voteScore}
-        body: {body}
-        comentários: {commentCount}
-      </p>
-      <LikeDislikePosts id={id} />
-      <button onClick={() => dispatch(deletePost(post))}>x</button>
+    <PostDetailPlaceholder post={post} />
       <div>
-        <CommentsListing id={id}/>
+        <CommentsListing parentId={post.id}/>
       </div>
     </div>
   )
 }
 
-const mapStateToProps = (state, {location}) => ({
-  post: location.state.post
-})
+const PostDetailPlaceholder = Placeholder(PostDetailPresentation, EditPost)
+
+const mapStateToProps = ({posts, allPosts, isFetchingInitialData}, {id}) => {
+  let post = allPosts.length > 0 ? posts[id] : undefined
+  return {
+    post,
+    loading: isFetchingInitialData
+  }
+}
 
 export default connect(mapStateToProps)(PostDetails)

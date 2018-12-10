@@ -31,7 +31,7 @@ class App extends Component {
             <hr/>
             <Route exact path="/" component={PostsList} />
             <Route exact path="/:category" render={({match}) => <PostsList filter={match.params.category} />} />
-            <Route exact path="/:category/:id" component={PostDetails} />
+            <Route exact path="/:category/:id" render={({match}) => <PostDetails id={match.params.id} /> } />
           </header>
         </div>
       </Router>

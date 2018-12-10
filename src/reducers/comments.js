@@ -1,4 +1,11 @@
-import {RECEIVE_COMMENTS, UP_VOTE_COMMENT, DOWN_VOTE_COMMENT, ADD_COMMENT, DELETE_COMMENT} from '../actions/comments'
+import {
+  RECEIVE_COMMENTS,
+  UP_VOTE_COMMENT,
+  DOWN_VOTE_COMMENT,
+  ADD_COMMENT,
+  EDIT_COMMENT,
+  DELETE_COMMENT
+} from '../actions/comments'
 
 const comments = (state = {}, action) => {
   switch (action.type) {
@@ -24,6 +31,11 @@ const comments = (state = {}, action) => {
         }
       }
     case ADD_COMMENT:
+      return {
+        ...state,
+        [action.comment.id]: action.comment
+      }
+    case EDIT_COMMENT:
         return {
           ...state,
           [action.comment.id]: action.comment
