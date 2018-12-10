@@ -1,5 +1,6 @@
 import {RECEIVE_DATA} from '../actions/shared'
 import {ADD_POST, EDIT_POST, REMOVE_POST, UPVOTE, DOWNVOTE} from '../actions/posts'
+import {ADD_COMMENT, DELETE_COMMENT} from '../actions/comments'
 
 const posts = (state = {}, action) => {
   switch (action.type) {
@@ -34,6 +35,22 @@ const posts = (state = {}, action) => {
         [action.id]: {
           ...state[action.id],
           voteScore: state[action.id].voteScore - 1
+        }
+      }
+    case ADD_COMMENT:
+      return {
+        ...state,
+        [action.postId]: {
+          ...state[action.postId],
+          commentCount : state[action.postId].commentCount + 1
+        }
+      }
+    case DELETE_COMMENT:
+      return {
+        ...state,
+        [action.postId]: {
+          ...state[action.postId],
+          commentCount: state[action.postId].commentCount - 1
         }
       }
     default:

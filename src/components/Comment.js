@@ -31,6 +31,6 @@ const mapStateToProps = (state, {comment, enableEditMode}) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  deleteComment: id => dispatch(deleteComment(id))
+  deleteComment: comment => dispatch(deleteComment(comment))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Comment)

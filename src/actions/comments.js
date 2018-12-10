@@ -35,7 +35,8 @@ const downvote_comment = id => ({
 
 const add_comment = comment => ({
   type: ADD_COMMENT,
-  comment
+  comment,
+  postId: comment.parentId
 })
 
 const edit_comment = comment => ({
@@ -43,9 +44,10 @@ const edit_comment = comment => ({
   comment
 })
 
-const delete_comment = id => ({
+const delete_comment = (comment) => ({
   type: DELETE_COMMENT,
-  id
+  id: comment.id,
+  postId: comment.parentId
 })
 
 export const getComments =  (id) => async dispatch => {
@@ -85,7 +87,7 @@ export const saveComment = comment => async dispatch => {
     readableAPI.saveComment(comment)
   } catch (err) {
     console.log(err)
-    dispatch(delete_comment(comment.id))
+    dispatch(delete_comment(comment))
     throw err
   }
 }
@@ -102,7 +104,7 @@ export const editComment = (editedComment, uneditedComment) => async dispatch =>
 }
 
 export const deleteComment = comment => async dispatch => {
-  dispatch(delete_comment(comment.id))
+  dispatch(delete_comment(comment))
   try {
     readableAPI.deleteComment(comment.id)
   } catch (err) {
