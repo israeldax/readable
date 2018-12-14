@@ -35,9 +35,8 @@ class EditCommentContainer extends React.PureComponent {
     const {disableEditMode} = this.props
     return (
       <div>
-        <button onClick={disableEditMode}>xe</button>
         <CommentFormPresentation
-          comment={this.state} submit={this.submit}
+          comment={this.state} submit={this.submit} disableEditMode={disableEditMode}
           handleBody={this.handleBody} handleAuthor={this.handleAuthor}
         />
       </div>

@@ -10,14 +10,14 @@ const style = theme => ({
   }
 })
 
-function PageNotFound ({classes}) {
+function load({msg, classes}) {
   return (
     <Grid container className={classes.root} spacing={0} direction="column" alignItems="center" justify="center">
       <Typography component="h2" variant="display3" gutterBottom>
-        Sorry, Page not found.
+        {msg}
       </Typography>
     </Grid>
   )
 }
 
-export default withStyles(style)(PageNotFound)
+export default withStyles(style)(load)

@@ -53,24 +53,17 @@ class EditPostContainer extends React.Component {
   render() {
     const {disableEditMode} = this.props
     return(
-      <div>
-        <button onClick={disableEditMode}>xe</button>
-        <PostFormPresentation
-          post={this.state} submit={this.submit}
-          handleTitle={this.handleTitle} handleBody={this.handleBody}
-          handleAuthor={this.handleAuthor} handleCategory={this.handleCategory}
-        />
-      </div>
+      <PostFormPresentation
+        post={this.state} submit={this.submit} disableEditMode={disableEditMode}
+        handleTitle={this.handleTitle} handleBody={this.handleBody}
+        handleAuthor={this.handleAuthor} handleCategory={this.handleCategory}
+      />
     )
   }
 }
-
-const mapStateToProps = (state, {disableEditMode}) =>({
-  disableEditMode
-})
 
 const mapDispatchToProps = dispatch => ({
   editPost: (editedPost, uneditedPost) => dispatch(editPost(editedPost, uneditedPost))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditPostContainer)
+export default connect(undefined, mapDispatchToProps)(EditPostContainer)

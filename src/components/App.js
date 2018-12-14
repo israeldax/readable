@@ -1,12 +1,25 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import {connect} from 'react-redux'
+
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import {withStyles} from '@material-ui/core';
+
+import Loading from './Loading'
+import Header from './Header'
 import {handleInitialData} from '../actions/shared'
-import {sortby} from '../actions/sortingby'
 import PostsList from './PostsList'
-import CategoriesList from './CategoriesList'
 import PostDetails from './PostDetails'
 import PageNotFound from './PageNotFound'
+
+const styles = theme => ({
+  frame: {
+    maxWidth: '1100px',
+    padding: '30px',
+    margin: 'auto'
+  }
+}) 
 
 class App extends Component {
 
@@ -15,43 +28,43 @@ class App extends Component {
   }
 
   render() {
-    const {loading, sortingby, sortbyVote, sortbyDate} = this.props
+    const {loading, classes} = this.props
 
     if(loading)
-      return <div>"loading..."</div>
+      return <Loading />
 
     return (
       <Router>
-        <div className="App">
-          <header className="App-header">
-            <Route path="/" component={CategoriesList} />
-            <input type="radio" value="vote" checked={sortingby === 'vote'} onChange={() => sortbyVote()}/>
-              Vote
-            <input type="radio" value="date" checked={sortingby === 'date'} onChange={() => sortbyDate()}/>
-              Date
-            <hr/>
-            <Switch>
-              <Route exact path="/" component={PostsList} />
-              <Route exact path="/:category" render={({match}) => <PostsList filter={match.params.category} />} />
-              <Route exact path="/:category/:id" render={({match}) => <PostDetails id={match.params.id} /> } />
-              <Route component={PageNotFound} />
-            </Switch>
-          </header>
-        </div>
+        <Fragment>
+        <CssBaseline />
+          <div className={classes.frame}>
+            <Grid container spacing={24}>
+              <Grid item xs={12}>
+                <Header />
+                <hr/>
+                <Switch>
+                  <Route exact path="/" component={PostsList} />
+                  <Route exact path="/:category" render={({match}) => <PostsList filter={match.params.category} />} />
+                  <Route exact path="/:category/:id" render={({match}) => <PostDetails id={match.params.id} /> } />
+                  <Route component={PageNotFound} />
+                </Switch>
+              </Grid>
+            </Grid>
+          </div>
+        </Fragment>
       </Router>
     );
   }
 }
 
-const mapStateToProps = ({isFetchingInitialData, sortingby}) => ({
+const mapStateToProps = ({isFetchingInitialData}) => ({
   loading: isFetchingInitialData,
-  sortingby
 })
 
 const mapDispatchToProps = dispatch => ({
   populateComponent: () => dispatch(handleInitialData()),
-  sortbyVote: () => dispatch(sortby('vote')),
-  sortbyDate: () => dispatch(sortby('date'))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(App)
+);

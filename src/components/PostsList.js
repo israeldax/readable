@@ -1,9 +1,12 @@
 import React from 'react'
+import {connect} from 'react-redux'
+
+import Loading from './Loading'
+import Message from './Message'
 import Placeholder from './Placeholder'
 import PostSummary from './PostSummary'
 import EditPost from './EditPostContainer'
 import AddPostContainer from './AddPostContainer'
-import {connect} from 'react-redux'
 
 class PostsList extends React.PureComponent {
 
@@ -11,15 +14,15 @@ class PostsList extends React.PureComponent {
     const {loading, posts} = this.props
 
     if(loading)
-      return <div>loading...</div>
+      return <Loading />
 
     if(posts.length === 0)
-      return <div>Sorry... There are no posts yet.</div>
+      return <Message msg="Sorry... There are no posts yet." />
 
     return (
       <div>
         {posts.map(post => <PostPlaceholder key={post.id} post={post} />)}
-        <AddPostContainer />
+          <AddPostContainer />
       </div>
     )
   }

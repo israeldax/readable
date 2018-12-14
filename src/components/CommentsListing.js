@@ -1,5 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
+
+import Loading from './Loading'
+import Message from './Message'
 import {getComments} from '../actions/comments'
 import Placeholder from './Placeholder'
 import Comment from './Comment'
@@ -17,7 +20,10 @@ class CommentsListing extends React.PureComponent {
     const {loading, comments, parentId} = this.props
 
     if(loading)
-      return <div>Loading</div>
+      return <Loading />
+
+    if(comments.lenght === 0)
+      return <Message msg="No comments yet." />
 
     return(
       <div>
